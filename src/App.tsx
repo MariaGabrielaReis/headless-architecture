@@ -2,17 +2,30 @@ import { useEffect, useState } from 'react';
 import { FilterButton } from './components/FilterButton';
 import { ISmartphone, SmartphoneItem } from './components/SmartphoneItem';
 
+function getFilters(storage?: string, manufacturer?: string) {
+  let filters = {};
+  if (storage) {
+    filters = { ...filters, storage };
+  }
+  if (manufacturer) {
+    filters = { ...filters, manufacturer };
+  }
+  return filters;
+}
+
 function App() {
   const [phones, setPhones] = useState<ISmartphone[]>();
   const [storage, setStorage] = useState<string>();
   const [manufacturer, setManufacturer] = useState<string>();
 
   useEffect(() => {
-    fetch(`http://localhost:3333/smartphones`).then(async res => {
+    const params = new URLSearchParams(getFilters(storage, manufacturer));
+
+    fetch(`http://localhost:3333/smartphones?${params}`).then(async res => {
       const data = await res.json();
       setPhones(data);
     });
-  }, []);
+  }, [storage, manufacturer]);
 
   return (
     <div className="">
