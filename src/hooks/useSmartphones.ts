@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { ISmartphone } from '../components/SmartphoneItem';
+import { useFetch } from './useFetch';
 
 function getFilters(storage?: string, manufacturer?: string) {
   let filters = {};
@@ -13,18 +14,13 @@ function getFilters(storage?: string, manufacturer?: string) {
 }
 
 export function useSmartphones() {
-  const [phones, setPhones] = useState<ISmartphone[]>();
   const [storage, setStorage] = useState<string>();
   const [manufacturer, setManufacturer] = useState<string>();
 
-  useEffect(() => {
-    const params = new URLSearchParams(getFilters(storage, manufacturer));
+  const params = new URLSearchParams(getFilters(storage, manufacturer));
+  const { response } = useFetch<ISmartphone[]>(
+    `http://localhost:3333/smartphones?${params}`
+  );
 
-    fetch(`http://localhost:3333/smartphones?${params}`).then(async res => {
-      const data = await res.json();
-      setPhones(data);
-    });
-  }, [storage, manufacturer]);
-
-  return { phones, setStorage, setManufacturer };
+  return { phones: response, setStorage, setManufacturer };
 }
