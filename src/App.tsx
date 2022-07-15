@@ -1,31 +1,10 @@
 import { useEffect, useState } from 'react';
 import { FilterButton } from './components/FilterButton';
 import { ISmartphone, SmartphoneItem } from './components/SmartphoneItem';
-
-function getFilters(storage?: string, manufacturer?: string) {
-  let filters = {};
-  if (storage) {
-    filters = { ...filters, storage };
-  }
-  if (manufacturer) {
-    filters = { ...filters, manufacturer };
-  }
-  return filters;
-}
+import { useSmartphones } from './hooks/useSmartphones';
 
 function App() {
-  const [phones, setPhones] = useState<ISmartphone[]>();
-  const [storage, setStorage] = useState<string>();
-  const [manufacturer, setManufacturer] = useState<string>();
-
-  useEffect(() => {
-    const params = new URLSearchParams(getFilters(storage, manufacturer));
-
-    fetch(`http://localhost:3333/smartphones?${params}`).then(async res => {
-      const data = await res.json();
-      setPhones(data);
-    });
-  }, [storage, manufacturer]);
+  const { phones, setStorage, setManufacturer } = useSmartphones();
 
   return (
     <div className="">
@@ -34,7 +13,7 @@ function App() {
           Celulares a Preço de Fábrica
         </h1>
 
-        <pre>{JSON.stringify({ storage, manufacturer }, null, 2)}</pre>
+        {/* <pre>{JSON.stringify({ storage, manufacturer }, null, 2)}</pre> */}
 
         <div className="flex w-full space-x-6 mt-12">
           <div className="flex flex-col shadow items-center p-6 w-full">
