@@ -1,4 +1,3 @@
-import { useEffect, useState } from 'react';
 import { FilterButton } from './components/FilterButton';
 import { ISmartphone, SmartphoneItem } from './components/SmartphoneItem';
 import { useSmartphones } from './hooks/useSmartphones';
