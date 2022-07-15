@@ -4,6 +4,8 @@ import { ISmartphone, SmartphoneItem } from './components/SmartphoneItem';
 
 function App() {
   const [phones, setPhones] = useState<ISmartphone[]>();
+  const [storage, setStorage] = useState<string>();
+  const [manufacturer, setManufacturer] = useState<string>();
 
   useEffect(() => {
     fetch(`http://localhost:3333/smartphones`).then(async res => {
@@ -19,23 +21,37 @@ function App() {
           Celulares a Preço de Fábrica
         </h1>
 
+        <pre>{JSON.stringify({ storage, manufacturer }, null, 2)}</pre>
+
         <div className="flex w-full space-x-6 mt-12">
           <div className="flex flex-col shadow items-center p-6 w-full">
             <label className="text-lg font-bold">Armazenamento</label>
             <div className="flex space-x-2 mt-6">
-              <FilterButton onClick={() => {}}>Todos</FilterButton>
-              <FilterButton onClick={() => {}}>64GB</FilterButton>
-              <FilterButton onClick={() => {}}>128GB</FilterButton>
-              <FilterButton onClick={() => {}}>256GB</FilterButton>
+              <FilterButton onClick={() => setStorage('')}>Todos</FilterButton>
+              <FilterButton onClick={() => setStorage('64GB')}>
+                64GB
+              </FilterButton>
+              <FilterButton onClick={() => setStorage('128GB')}>
+                128GB
+              </FilterButton>
+              <FilterButton onClick={() => setStorage('256GB')}>
+                256GB
+              </FilterButton>
             </div>
           </div>
 
           <div className="flex flex-col shadow items-center p-6 w-full">
             <label className="text-lg font-bold">Marca</label>
             <div className="flex space-x-2 mt-6">
-              <FilterButton onClick={() => {}}>Todas</FilterButton>
-              <FilterButton onClick={() => {}}>Apple</FilterButton>
-              <FilterButton onClick={() => {}}>Samsung</FilterButton>
+              <FilterButton onClick={() => setManufacturer('')}>
+                Todas
+              </FilterButton>
+              <FilterButton onClick={() => setManufacturer('Apple')}>
+                Apple
+              </FilterButton>
+              <FilterButton onClick={() => setManufacturer('Samsung')}>
+                Samsung
+              </FilterButton>
             </div>
           </div>
         </div>
