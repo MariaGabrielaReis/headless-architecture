@@ -1,7 +1,17 @@
-import { FilterButton } from "./components/FilterButton";
-import { SmartphoneItem } from "./components/SmartphoneItem";
+import { useEffect, useState } from 'react';
+import { FilterButton } from './components/FilterButton';
+import { ISmartphone, SmartphoneItem } from './components/SmartphoneItem';
 
 function App() {
+  const [phones, setPhones] = useState<ISmartphone[]>();
+
+  useEffect(() => {
+    fetch(`http://localhost:3333/smartphones`).then(async res => {
+      const data = await res.json();
+      setPhones(data);
+    });
+  }, []);
+
   return (
     <div className="">
       <section className="max-w-5xl m-auto shadow-lg py-24 mt-12">
@@ -31,18 +41,9 @@ function App() {
         </div>
 
         <div className="flex flex-wrap justify-around space-y-12 mt-12">
-          <SmartphoneItem
-            data={{
-              id: "1",
-              image:
-                "https://images.unsplash.com/photo-1592950630581-03cb41342cc5?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1287&q=80",
-              manufacturer: "Apple",
-              memory: "64GB",
-              name: "Iphone X",
-              price: "R$ 1.999,00",
-              storage: "64GB",
-            }}
-          />
+          {phones?.map((phone: ISmartphone) => (
+            <SmartphoneItem data={phone} key={phone.id} />
+          ))}
         </div>
       </section>
     </div>
